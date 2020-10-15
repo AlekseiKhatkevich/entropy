@@ -2,7 +2,7 @@ import os
 import socket
 from pathlib import Path
 
-from configurations import Configuration
+from configurations import Configuration, values
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,11 +20,11 @@ class Dev(Configuration):
     # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = values.Value(os.getenv('SECRET_KEY'))
 
     # SECURITY WARNING: don't run with debug turned on in production!
     # noinspection DjangoDebugModeSettings
-    DEBUG = bool(int(os.getenv('DEBUG', default=1)))
+    DEBUG = values.BooleanValue(int(os.getenv('DEBUG', default=1)))
 
     ALLOWED_HOSTS = [
         '127.0.0.1',
@@ -129,5 +129,8 @@ class Dev(Configuration):
 
 
 class Docker(Configuration):
-    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+    @property
+    def INTERNAL_IPS(self):
+        hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+
+        return [ip[:-1] + "1" for ip in ips]
