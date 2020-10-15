@@ -2,3 +2,4 @@ django
 python 3.9
 django-debug-toolbar
 python-dotenv
+django-configurations
