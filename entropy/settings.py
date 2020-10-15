@@ -39,7 +39,7 @@ class Dev(Configuration):
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
-        # 'django.contrib.sessions',
+        'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
         # Third party apps
@@ -84,8 +84,17 @@ class Dev(Configuration):
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME'),
+            'USER': values.Value(os.getenv('DATABASE_USER')),
+            'PASSWORD': values.Value(os.getenv('DATABASE_PASSWORD')),
+            'HOST': values.Value(os.getenv('DATABASE_HOST')),
+            'PORT': values.Value(os.getenv('DATABASE_PORT')),
+            'CONN_MAX_AGE': None,
+            'TEST': {
+                'NAME': 'entropy_db_tests',
+                'SERIALIZE': False,
+            },
         }
     }
 
