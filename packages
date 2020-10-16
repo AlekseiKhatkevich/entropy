@@ -2,11 +2,12 @@ django
 python 3.9
 django-debug-toolbar
 python-dotenv
-django-configurations
 psycopg2
 djangorestframework
 uvicorn
 httptools
+whitenoise
+six
 
 --pip
 trustme

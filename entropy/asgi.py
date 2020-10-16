@@ -8,17 +8,10 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 """
 
 import os
-from configurations import importer
 
-# IMPORTANT !!!
-# Module code was changed in order to comply with django-configurations.
-# In case of undebagable bugs - please try to revert to original asgi.py
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'entropy.settings')
-os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 
-
-importer.install()
 
 try:
     from django.core.asgi import get_asgi_application
