@@ -5,3 +5,10 @@ python-dotenv
 django-configurations
 psycopg2
 djangorestframework
+uvicorn
+httptools
+
+
+в продакшн
+uvloop
+gunicorn
