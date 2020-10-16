@@ -24,7 +24,7 @@ class Dev(Configuration):
 
     # SECURITY WARNING: don't run with debug turned on in production!
     # noinspection DjangoDebugModeSettings
-    DEBUG = values.BooleanValue(int(os.getenv('DEBUG', default=1)))
+    DEBUG = values.BooleanValue(bool(int(os.getenv('DEBUG', default=1))))
 
     ALLOWED_HOSTS = [
         '127.0.0.1',

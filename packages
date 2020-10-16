@@ -8,6 +8,8 @@ djangorestframework
 uvicorn
 httptools
 
+--pip
+trustme
 
 в продакшн
 uvloop
