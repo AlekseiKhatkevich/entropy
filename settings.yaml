@@ -1,0 +1,24 @@
+default:
+    DEBUG: true
+development:
+    DEBUG: true
+    DATABASES:
+        default:
+            ENGINE: 'django.db.backends.postgresql'
+            NAME: 'entropy'
+            HOST: 'localhost'
+            PORT: '5432'
+            CONN_MAX_AGE: null
+            TEST:
+                NAME: 'entropy_db_tests'
+                SERIALIZE: false
+    INTERNAL_IPS:
+        -'127.0.0.1'
+        -'localhost'
+        -'0.0.0.0'
+production:
+    DEBUG: false
+
+
+
+

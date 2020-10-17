@@ -26,5 +26,5 @@ if __name__ == '__main__':
             use_colors=True,
             # ssl_keyfile=Path(r'rootCA-key.pem'),
             # ssl_certfile=Path(r'rootCA.pem'),
-            ssl_certfile=ssl_certfile,
+            #ssl_certfile=ssl_certfile,  Раскоментить только эту строку
         )

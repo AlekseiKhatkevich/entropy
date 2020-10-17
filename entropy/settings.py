@@ -6,10 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# MARKERS
-# env 'I_AM_IN_DOCKER' defined in DOCKERFILE.
-I_AM_IN_DOCKER = bool(int(os.getenv('I_AM_IN_DOCKER', default=0)))
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,11 +13,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # noinspection DjangoDebugModeSettings
-DEBUG = bool(int(os.getenv('DEBUG', default=1)))
+
+DATABASES = {}
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -81,22 +77,6 @@ ASGI_APPLICATION = 'entropy.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
-        'CONN_MAX_AGE': None,
-        'TEST': {
-            'NAME': 'entropy_db_tests',
-            'SERIALIZE': False,
-        },
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -135,8 +115,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-INTERNAL_IPS = ['127.0.0.1', 'localhost', '0.0.0.0', ]
-
 
 class Docker():
     """
@@ -154,5 +132,12 @@ class Docker():
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
 import dynaconf  # noqa
 
-settings = dynaconf.DjangoDynaconf(__name__)  # noqa
+settings = dynaconf.DjangoDynaconf(
+    __name__,
+validators=[
+        dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
+        dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
+        for database in dynaconf.settings.DATABASES
+    ]
+)  # noqa
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)
