@@ -1,7 +1,9 @@
 default:
-    DEBUG: true
-development:
-    DEBUG: true
+    CACHES:
+        default:
+            BACKEND: 'django_redis.cache.RedisCache'
+            OPTIONS:
+                CLIENT_CLASS: 'django_redis.client.DefaultClient'
     DATABASES:
         default:
             ENGINE: 'django.db.backends.postgresql'
@@ -12,10 +14,21 @@ development:
             TEST:
                 NAME: 'entropy_db_tests'
                 SERIALIZE: false
+
+development:
+    DEBUG: true
     INTERNAL_IPS:
         -'127.0.0.1'
         -'localhost'
         -'0.0.0.0'
+    CACHES:
+        default:
+            LOCATION: 'redis://127.0.0.1:6379/5'
+    DATABASES:
+        default:
+            HOST: 'localhost'
+            PORT: '5432'
+
 production:
     DEBUG: false
 

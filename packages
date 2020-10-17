@@ -12,6 +12,7 @@ dynaconf
 
 --pip
 trustme
+django-redis
 
 в продакшн
 uvloop

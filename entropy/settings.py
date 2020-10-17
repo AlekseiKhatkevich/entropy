@@ -2,10 +2,6 @@ import os
 import socket
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,8 +12,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # noinspection DjangoDebugModeSettings
-
-DATABASES = {}
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -116,7 +110,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-class Docker():
+class Docker:
     """
     Configuration class for use in Docker.
     """
@@ -134,10 +128,14 @@ import dynaconf  # noqa
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
-validators=[
-        dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
-        dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
-        for database in dynaconf.settings.DATABASES
+    core_loaders=['YAML', ],
+    dotenv_verbose=True,
+    environments=True,
+    merge_enabled=True,  # Might be a problems with this one!!!
+    validators=[
+        # *[dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
+        # dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
+        # for database in dynaconf.settings.DATABASES],
     ]
 )  # noqa
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)

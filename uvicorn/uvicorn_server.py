@@ -22,7 +22,7 @@ if __name__ == '__main__':
             log_level='info',
             reload=True,
             workers=os.cpu_count(),
-            env_file=Path(r'entropy\.env').absolute(),
+            #env_file=Path(r'.env').absolute(),
             use_colors=True,
             # ssl_keyfile=Path(r'rootCA-key.pem'),
             # ssl_certfile=Path(r'rootCA.pem'),
