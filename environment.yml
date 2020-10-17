@@ -1,19 +1,20 @@
 name: entropy
 channels:
-  - conda-forge
+  - sclare
   - defaults
+  - conda-forge
 dependencies:
-  - asgiref=3.3.0=py_0
-  - ca-certificates=2020.6.20=hecda079_0
+  - ca-certificates=2020.10.14=0
   - certifi=2020.6.20=py39h467e6f4_2
   - click=7.1.2=py_0
   - django=3.1.2=py_0
-  - django-configurations=2.2=pyh9f0ad1d_0
   - django-debug-toolbar=3.1.1=py_0
   - djangorestframework=3.12.1=py_0
+  - dynaconf=3.1.0=py_0
   - h11=0.9.0=py_0
+  - hiredis=1.1.0=py39h4cdbadb_1
   - httptools=0.1.1=py39h4cdbadb_1
-  - krb5=1.17.1=hc04afaa_3
+  - krb5=1.17.1=hc04afaa_0
   - libpq=12.3=hd9aa61d_2
   - openssl=1.1.1h=he774522_0
   - pip=20.2.3=py_0
@@ -27,7 +28,8 @@ dependencies:
   - six=1.15.0=py_0
   - sqlite=3.33.0=h2a8f88b_0
   - sqlparse=0.4.1=py_0
-  - tk=8.6.10=he774522_1
+  - tk=8.6.10=he774522_0
+  - typing=3.7.4.3=py39hde42818_1
   - tzdata=2020b=h7b6447c_0
   - uvicorn=0.12.1=py39hde42818_0
   - vc=14.1=h0510ff6_4
@@ -35,13 +37,17 @@ dependencies:
   - watchgod=0.6=py_0
   - websockets=8.1=py39h4cdbadb_2
   - wheel=0.35.1=py_0
+  - whitenoise=5.2.0=py_0
   - wincertstore=0.2=py39hde42818_1005
   - yaml=0.2.5=he774522_0
   - zlib=1.2.11=h62dcd97_4
   - pip:
+    - asgiref==3.2.10
     - cffi==1.14.3
     - cryptography==3.1.1
+    - django-redis==4.12.1
     - idna==2.10
     - pycparser==2.20
+    - redis==3.5.3
     - trustme==0.6.0
 prefix: C:\ProgramData\Miniconda3\envs\entropy

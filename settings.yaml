@@ -1,9 +1,15 @@
 default:
+
     CACHES:
         default:
             BACKEND: 'django_redis.cache.RedisCache'
             OPTIONS:
                 CLIENT_CLASS: 'django_redis.client.DefaultClient'
+                SOCKET_CONNECT_TIMEOUT: 5
+                SOCKET_TIMEOUT: 5
+                COMPRESSOR: 'django_redis.compressors.zlib.ZlibCompressor'
+                PARSER_CLASS: 'redis.connection.HiredisParser'
+
     DATABASES:
         default:
             ENGINE: 'django.db.backends.postgresql'
@@ -16,20 +22,26 @@ default:
                 SERIALIZE: false
 
 development:
+
     DEBUG: true
+
     INTERNAL_IPS:
         -'127.0.0.1'
         -'localhost'
         -'0.0.0.0'
+
     CACHES:
         default:
             LOCATION: 'redis://127.0.0.1:6379/5'
+
+
     DATABASES:
         default:
             HOST: 'localhost'
             PORT: '5432'
 
 production:
+
     DEBUG: false
 
 

@@ -9,6 +9,7 @@ httptools
 whitenoise
 six
 dynaconf
+Hiredis
 
 --pip
 trustme

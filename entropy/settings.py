@@ -109,6 +109,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+#  Cache settings.
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
 
 class Docker:
     """
@@ -133,9 +137,17 @@ settings = dynaconf.DjangoDynaconf(
     environments=True,
     merge_enabled=True,  # Might be a problems with this one!!!
     validators=[
-        # *[dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
-        # dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
-        # for database in dynaconf.settings.DATABASES],
+        # Databases password and user must exists
+        *[
+        dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
+        dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
+        for database in dynaconf.settings.DATABASES
+        ],
+        # REDIS password must exists
+        *[
+        dynaconf.Validator(f'CACHES.{cache}.OPTIONS.PASSWORD', must_exist=True)
+        for cache in dynaconf.settings.CACHES
+        ],
     ]
 )  # noqa
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)
