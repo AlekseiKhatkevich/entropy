@@ -21,6 +21,9 @@ if __name__ == '__main__':
             port=8000,
             log_level='info',
             reload=True,
+            reload_dirs=[
+                Path('..'),
+            ],
             workers=os.cpu_count(),
             #env_file=Path(r'.env').absolute(),
             use_colors=True,

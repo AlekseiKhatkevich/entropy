@@ -22,6 +22,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+
     #  Standard apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # Third party apps
     'debug_toolbar',
     'rest_framework',
@@ -117,7 +119,6 @@ SESSION_CACHE_ALIAS = 'default'
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
-
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
 import dynaconf  # noqa
@@ -153,3 +154,4 @@ settings = dynaconf.DjangoDynaconf(
     ]
 )  # noqa
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)
+

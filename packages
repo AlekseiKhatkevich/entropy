@@ -16,7 +16,7 @@ Hiredis
 trustme
 django-redis
 drf-ujson2
-drf-spectacular
+
 
 в продакшн
 uvloop
