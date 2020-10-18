@@ -133,20 +133,27 @@ import dynaconf  # noqa
 settings = dynaconf.DjangoDynaconf(
     __name__,
     core_loaders=['YAML', ],
+    load_dotenv=True,
     dotenv_verbose=True,
     environments=True,
-    merge_enabled=True,  # Might be a problems with this one!!!
+    #merge_enabled=True,  # Might be a problems with this one!!!
+    #redis_enabled=True,
+    root_path=Path(r'.'),
+    settings_files=[
+        'settings.yaml',
+        '.secrets.yaml',
+    ],
     validators=[
         # Databases password and user must exists
         *[
-        dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
-        dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
-        for database in dynaconf.settings.DATABASES
+            dynaconf.Validator(f'DATABASES.{database}.USER', must_exist=True) &
+            dynaconf.Validator(f'DATABASES.{database}.PASSWORD', must_exist=True)
+            for database in dynaconf.settings.DATABASES
         ],
         # REDIS password must exists
         *[
-        dynaconf.Validator(f'CACHES.{cache}.OPTIONS.PASSWORD', must_exist=True)
-        for cache in dynaconf.settings.CACHES
+            dynaconf.Validator(f'CACHES.{cache}.OPTIONS.PASSWORD', must_exist=True)
+            for cache in dynaconf.settings.CACHES
         ],
     ]
 )  # noqa
