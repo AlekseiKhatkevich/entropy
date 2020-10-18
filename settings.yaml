@@ -19,6 +19,7 @@ default:
                 NAME: 'entropy_db_tests'
                 SERIALIZE: false
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 development:
 
     DEBUG: true
@@ -38,10 +39,10 @@ development:
             HOST: 'localhost'
             PORT: '5432'
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 production:
 
     DEBUG: false
-
 
 
 

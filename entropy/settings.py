@@ -114,16 +114,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
 
-class Docker:
-    """
-    Configuration class for use in Docker.
-    """
-
-    @property
-    def INTERNAL_IPS(self):
-        hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-
-        return [ip[:-1] + "1" for ip in ips]
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
@@ -136,7 +128,7 @@ settings = dynaconf.DjangoDynaconf(
     load_dotenv=True,
     dotenv_verbose=True,
     environments=True,
-    #merge_enabled=True,  # Might be a problems with this one!!!
+    merge_enabled=True,  # Might be a problems with this one!!!
     #redis_enabled=True,
     root_path=Path(r'.'),
     settings_files=[
