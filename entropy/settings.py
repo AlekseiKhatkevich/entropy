@@ -124,16 +124,19 @@ import dynaconf  # noqa
 
 settings = dynaconf.DjangoDynaconf(
     __name__,
-    core_loaders=['YAML', ],
+    core_loaders=['YAML', 'PY'],
     load_dotenv=True,
     dotenv_verbose=True,
     environments=True,
-    merge_enabled=True,  # Might be a problems with this one!!!
+    merge_enabled=True,
     #redis_enabled=True,
     root_path=Path(r'.'),
     settings_files=[
         'settings.yaml',
         '.secrets.yaml',
+    ],
+    includes=[
+        str(Path('drf/drf_settings.py')),
     ],
     validators=[
         # Databases password and user must exists
