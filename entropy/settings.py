@@ -34,6 +34,10 @@ INSTALLED_APPS = [
     # Third party apps
     'debug_toolbar',
     'rest_framework',
+    'drf_yasg2',
+
+    # Project's apps
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -115,9 +119,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
-
+#  INTERNAL_IPS dynamically calculated for docker.
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+
+#  User model
+AUTH_USER_MODEL = 'users.User'
+
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
@@ -130,7 +138,6 @@ settings = dynaconf.DjangoDynaconf(
     dotenv_verbose=True,
     environments=True,
     merge_enabled=True,
-    #redis_enabled=True,
     root_path=Path(r'.'),
     settings_files=[
         'settings.yaml',
