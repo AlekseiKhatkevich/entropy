@@ -1,15 +1,20 @@
-from django.db import models
 import uuid
 
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.db import models
+from users.managers import UserManager
 
-class User(models.Model):
+
+class User(AbstractBaseUser):
     """
     Custom user model
     """
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['email', 'password', ]
 
-    #objects =
+    last_login = None
+
+    objects = UserManager()
 
     id = models.UUIDField(
         verbose_name='User id (UID)',
@@ -29,8 +34,8 @@ class User(models.Model):
         verbose_name='Last time user model has changed',
         auto_now=True,
     )
-    is_staff = models.BooleanField(
-        verbose_name='Is user staff?',
+    is_superuser = models.BooleanField(
+        verbose_name='Is user superuser',
         default=False,
     )
     nickname = models.CharField(
@@ -41,10 +46,10 @@ class User(models.Model):
     )
 
     class Meta:
-        pass
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
-    def __str__(self):
-        pass
+
 
 
 
