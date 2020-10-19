@@ -16,7 +16,14 @@ default:
             NAME: 'entropy'
             CONN_MAX_AGE: null
             TEST:
-                NAME: 'entropy_db_tests'
+                NAME: 'entropy_tests'
+                SERIALIZE: false
+        users:
+            ENGINE: 'django.db.backends.postgresql'
+            NAME: 'entropy_users'
+            CONN_MAX_AGE: null
+            TEST:
+                NAME: 'entropy_users_tests'
                 SERIALIZE: false
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,6 +43,9 @@ development:
 
     DATABASES:
         default:
+            HOST: 'localhost'
+            PORT: '5432'
+        users:
             HOST: 'localhost'
             PORT: '5432'
 

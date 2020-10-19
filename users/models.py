@@ -10,7 +10,7 @@ class User(AbstractBaseUser):
     Custom user model
     """
     USERNAME_FIELD = EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'password', ]
+    REQUIRED_FIELDS = ('password', )
 
     last_login = None
 
@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
     )
     registration_date = models.DateTimeField(
         verbose_name='User registration date',
-        auto_now_add=True
+        auto_now_add=True,
     )
     last_change = models.DateTimeField(
         verbose_name='Last time user model has changed',
@@ -48,6 +48,14 @@ class User(AbstractBaseUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
+
+
+
 
 
 
