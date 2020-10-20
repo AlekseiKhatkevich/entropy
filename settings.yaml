@@ -18,13 +18,7 @@ default:
             TEST:
                 NAME: 'entropy_tests'
                 SERIALIZE: false
-        users:
-            ENGINE: 'django.db.backends.postgresql'
-            NAME: 'entropy_users'
-            CONN_MAX_AGE: null
-            TEST:
-                NAME: 'entropy_users_tests'
-                SERIALIZE: false
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 development:

@@ -1,7 +1,10 @@
 import uuid
+import zoneinfo
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+
+from entropy import validators as project_validators
 from users.managers import UserManager
 
 
@@ -44,10 +47,25 @@ class User(AbstractBaseUser):
         null=True,
         blank=True,
     )
+    timezone = models.CharField(
+        verbose_name='User timezone',
+        max_length=50,
+        null=True,
+        blank=True,
+        validators=[
+            project_validators.TimeZoneValidator(),
+        ]
+    )
 
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+        constraints = (
+            models.CheckConstraint(
+                name='timezone_check',
+                check=models.Q(timezone__in=zoneinfo.available_timezones())
+            ),
+        )
 
     def save(self, fc=True, *args, **kwargs):
         if fc:
