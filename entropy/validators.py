@@ -1,6 +1,6 @@
 import zoneinfo
 
-from django.core.exceptions import ValidationError
+from django.core import exceptions
 from django.utils.deconstruct import deconstructible
 
 
@@ -13,6 +13,6 @@ class TimeZoneValidator:
         try:
             zoneinfo.ZoneInfo(value)
         except zoneinfo.ZoneInfoNotFoundError as err:
-            raise ValidationError(
+            raise exceptions.ValidationError(
                 'timezone name is incorrect'
             ) from err

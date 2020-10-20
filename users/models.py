@@ -1,6 +1,6 @@
 import uuid
 import zoneinfo
-
+from django.contrib.postgres.indexes  import BrinIndex
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
@@ -46,6 +46,7 @@ class User(AbstractBaseUser):
         max_length=30,
         null=True,
         blank=True,
+        unique=True,
     )
     timezone = models.CharField(
         verbose_name='User timezone',
@@ -65,6 +66,9 @@ class User(AbstractBaseUser):
                 name='timezone_check',
                 check=models.Q(timezone__in=zoneinfo.available_timezones())
             ),
+        )
+        indexes = (
+            BrinIndex(fields=('registration_date', ), autosummarize=True,),
         )
 
     def save(self, fc=True, *args, **kwargs):
