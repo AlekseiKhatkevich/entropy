@@ -2,6 +2,7 @@ import zoneinfo
 
 from django.core import exceptions
 from django.utils.deconstruct import deconstructible
+from entropy.errors import messages
 
 
 @deconstructible
@@ -14,5 +15,5 @@ class TimeZoneValidator:
             zoneinfo.ZoneInfo(value)
         except zoneinfo.ZoneInfoNotFoundError as err:
             raise exceptions.ValidationError(
-                'timezone name is incorrect'
+                *messages.user_2,
             ) from err
