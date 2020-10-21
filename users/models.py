@@ -1,9 +1,10 @@
 import uuid
 import zoneinfo
-from django.contrib.postgres.indexes  import BrinIndex
+from django.contrib.postgres.indexes import BrinIndex
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-
+from django.db.models.functions import Length
+from django.db.models import Q, ExpressionWrapper
 from entropy import validators as project_validators
 from users.managers import UserManager
 
@@ -28,6 +29,13 @@ class User(AbstractBaseUser):
     email = models.EmailField(
         verbose_name='User email',
         unique=True,
+    )
+    password = models.CharField(
+        verbose_name='password',
+        max_length=128,
+        validators=[
+            project_validators.Argon2HashValidator()
+        ]
     )
     registration_date = models.DateTimeField(
         verbose_name='User registration date',
@@ -64,8 +72,15 @@ class User(AbstractBaseUser):
         constraints = (
             models.CheckConstraint(
                 name='timezone_check',
-                check=models.Q(timezone__in=zoneinfo.available_timezones())
+                check=Q(timezone__in=zoneinfo.available_timezones())
             ),
+            models.CheckConstraint(
+                name='argon2_hash_check',
+                check=Q(
+                    password__length=project_validators.Argon2HashValidator.standard_hash_len,
+                    password__startswith=project_validators.Argon2HashValidator.hash_prefix,
+                )
+            )
         )
         indexes = (
             BrinIndex(fields=('registration_date', ), autosummarize=True,),

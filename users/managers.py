@@ -39,8 +39,11 @@ class UserManager(BaseUserManager):
         """
         try:
             validate_password(password, user)
-        except exceptions.ValidationError as err:
-            raise exceptions.ValidationError(
+        except exceptions.ValidationError as orig_err:
+            err = exceptions.ValidationError(
                 *messages.user_3,
-                params=str(err),
-            ) from err
+            )
+            err.swap_message = True
+            raise err from orig_err
+
+

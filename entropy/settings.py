@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     # Project's apps
     'users.apps.UsersConfig',
+    'misc.apps.MiscConfig',
 ]
 
 MIDDLEWARE = [
@@ -130,9 +131,9 @@ AUTH_USER_MODEL = 'users.User'
 PASSWORD_HASHERS = [
     #'django.contrib.auth.hashers.Argon2PasswordHasher',
     'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    # 'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    # 'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    # 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 

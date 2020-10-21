@@ -38,16 +38,17 @@ class ErrorMessage:
         )
 
     def __str__(self):
-        return self.error_code
+        return f'{self.error_code} *** {self.title}'
 
     def __iter__(self):
         """
         Method __iter__  implemented in order to use class instance as an 'Exception' argument
         with unpacking operator *.
         Exception(*ErrorMessage(*args, **kwargs)) ->
-        -> Exception(message=class.error_code, code=class.error_code)
+        -> Exception(message=self, code=self)
         """
-        yield from (self.error_code,) * 2
+        # noinspection PyRedundantParentheses
+        yield from (self, self.error_code)
 
     def __new__(cls, section, error_code_number, *args, **kwargs):
         """
