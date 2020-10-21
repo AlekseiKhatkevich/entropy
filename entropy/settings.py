@@ -126,6 +126,15 @@ INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 #  User model
 AUTH_USER_MODEL = 'users.User'
 
+#  Password hashers for basic auth.
+PASSWORD_HASHERS = [
+    #'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html

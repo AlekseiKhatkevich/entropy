@@ -10,7 +10,7 @@ whitenoise
 six
 dynaconf
 Hiredis
-
+argon2-cffi
 
 --pip
 trustme
