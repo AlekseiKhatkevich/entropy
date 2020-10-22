@@ -8,3 +8,4 @@ def test__test_environment():
     environment = os.getenv('ENV_FOR_DYNACONF')
 
     assert environment == 'test'
+

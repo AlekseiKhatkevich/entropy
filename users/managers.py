@@ -46,4 +46,14 @@ class UserManager(BaseUserManager):
             err.swap_message = True
             raise err from orig_err
 
+    def create(self, fc=True, **kwargs):
+        """
+        Create a new object with the given kwargs, saving it to the database
+        and returning the created object.
+        """
+        obj = self.model(**kwargs)
+        self._for_write = True
+        obj.save(force_insert=True, using=self.db, fc=fc)
+        return obj
+
 
