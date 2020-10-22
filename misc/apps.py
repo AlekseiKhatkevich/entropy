@@ -5,6 +5,6 @@ class MiscConfig(AppConfig):
     name = 'misc'
 
     def ready(self):
-        from . import lookups_and_transforms
+        from entropy import lookups_and_transforms
 
 
