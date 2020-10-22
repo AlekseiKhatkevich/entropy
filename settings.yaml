@@ -50,6 +50,18 @@ production:
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test:
+    DEBUG: true
 
+    CACHES:
+        default:
+            LOCATION: 'redis://127.0.0.1:6379/5'
+
+    DATABASES:
+        default:
+            HOST: 'localhost'
+            PORT: '5432'
+        users:
+            HOST: 'localhost'
+            PORT: '5432'
 
 

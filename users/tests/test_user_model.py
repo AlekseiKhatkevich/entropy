@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 
 
-
+@pytest.mark.django_db
 class TestUserModelPositive:
     """
     Positive test on User model
@@ -18,6 +18,7 @@ class TestUserModelPositive:
         """
         Check that if correct data is provided, then User model instance can be created.
         """
-        user = get_user_model().objects.create(**self.initial_data)
+        get_user_model().objects.create(**self.initial_data)
 
-        assert get_user_model().objects.exists(**self.initial_data)
+        assert get_user_model().objects.filter(**self.initial_data).exists()
+

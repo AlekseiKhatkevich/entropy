@@ -19,6 +19,7 @@ trustme
 django-redis
 drf-ujson2
 drf-yasg2
+pytest-dotenv
 
 в продакшн
 uvloop
