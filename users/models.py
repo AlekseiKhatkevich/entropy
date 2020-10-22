@@ -1,10 +1,11 @@
 import uuid
 import zoneinfo
-from django.contrib.postgres.indexes import BrinIndex
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.postgres.indexes import BrinIndex
 from django.db import models
-from django.db.models.functions import Length
-from django.db.models import Q, ExpressionWrapper
+from django.db.models import Q
+
 from entropy import validators as project_validators
 from users.managers import UserManager
 

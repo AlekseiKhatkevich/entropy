@@ -11,6 +11,8 @@ six
 dynaconf
 Hiredis
 argon2-cffi
+pytest
+pytest-django
 
 --pip
 trustme
