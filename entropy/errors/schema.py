@@ -38,7 +38,7 @@ class ErrorMessage:
         )
 
     def __str__(self):
-        return rf'{self.error_code} --- {self.title}'
+        return f'{self.error_code} --- {self.title}'
 
     def __iter__(self):
         """
