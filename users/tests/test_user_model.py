@@ -6,7 +6,11 @@ from django.db import IntegrityError
 
 
 @pytest.fixture(scope='function')
-def user_initial_data():
+def user_initial_data() -> dict:
+    """
+    Creates positive initial data for user instance creation.
+    :return: dict with user's data
+    """
     initial_data = dict(
         email='test@email.com',
         password='argon2id$argon2i$v=19$m=512,t=2,p=2$SDV5RzU4eG5OcWU0$o1+GMGzgCYNOi8fBTqgmYQ',
@@ -58,3 +62,6 @@ class TestUserModelNegative:
 
         with pytest.raises(IntegrityError, match=expected_error_message):
             get_user_model().objects.create(fc=False, **user_initial_data)
+
+
+ 
