@@ -1,5 +1,7 @@
-import pytest
+from pytest_fixtures.users_fixtures import (
+    user_initial_data,
 
+)
 
 # AUTO-USE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # @pytest.fixture(autouse=True)
@@ -7,20 +9,7 @@ import pytest
 #     """
 #     Code here would be ran in each test (method i guess ???)
 #     """
-#     print('I am run in each test. Please switch me off')
+#     print('I am getting ran in each test. Please switch me off')
 
 
-# USERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@pytest.fixture(scope='function')
-def user_initial_data() -> dict:
-    """
-    Creates positive initial data for user instance creation.
-    :return: dict with user's data
-    """
-    initial_data = dict(
-        email='test@email.com',
-        password='1q2w3e',
-        nickname='testuser',
-        timezone='Iceland',
-    )
-    return initial_data
+
