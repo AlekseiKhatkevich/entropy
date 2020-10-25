@@ -71,20 +71,28 @@ class User(AbstractBaseUser):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         constraints = (
+            #  Makes sure that time zone name is valid
             models.CheckConstraint(
                 name='timezone_check',
-                check=Q(timezone__in=zoneinfo.available_timezones())
+                check=Q(timezone__in=zoneinfo.available_timezones(),
+                        )
             ),
+            #  Makes sure that password hash is a valid argon2 hash
             models.CheckConstraint(
                 name='argon2_hash_check',
                 check=Q(
                     password__length=project_validators.Argon2HashValidator.standard_hash_len,
                     password__startswith=project_validators.Argon2HashValidator.hash_prefix,
                 )
+            ),
+            #  Make sure that email address is valid
+            models.CheckConstraint(
+                name='email_check',
+                check=Q(email__regex=r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$',),
             )
         )
         indexes = (
-            BrinIndex(fields=('registration_date', ), autosummarize=True,),
+            BrinIndex(fields=('registration_date',), autosummarize=True,),
         )
 
     def save(self, fc=True, *args, **kwargs):

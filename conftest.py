@@ -1,6 +1,6 @@
 from pytest_fixtures.users_fixtures import (
     user_initial_data,
-
+    one_test_user,
 )
 
 # AUTO-USE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,3 +11,7 @@ from pytest_fixtures.users_fixtures import (
 #     """
 #     print('I am getting ran in each test. Please switch me off')
 
+
+# Run before all tests
+# def runme():
+#     print('HERE!!!!!!!!!!!!!')
