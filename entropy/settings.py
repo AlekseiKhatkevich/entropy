@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Third party apps
     'debug_toolbar',
     'rest_framework',
+    'djoser',
     'drf_yasg2',
 
     # Project's apps
@@ -131,11 +132,16 @@ AUTH_USER_MODEL = 'users.User'
 PASSWORD_HASHERS = [
     #'django.contrib.auth.hashers.Argon2PasswordHasher',
     'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
-    # 'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    # 'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    # 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
+# Simple JWT settings
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
+}
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
@@ -154,7 +160,8 @@ settings = dynaconf.DjangoDynaconf(
         '.secrets.yaml',
     ],
     includes=[
-        str(Path('drf/drf_settings.py')),
+        str(Path('drf_folder/drf_settings.py')),
+        str(Path('djoser_folder/djoser_settings.py')),
     ],
     validators=[
         # Databases password and user must exists

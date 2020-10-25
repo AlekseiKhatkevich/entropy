@@ -100,6 +100,13 @@ class User(AbstractBaseUser):
             self.full_clean()
         super().save(*args, **kwargs)
 
+    @property
+    def is_staff(self):
+        """
+        Needed to mock default Django user model behaviour.
+        """
+        return self.is_superuser
+
 
 
 
