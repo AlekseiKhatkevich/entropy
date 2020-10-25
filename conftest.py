@@ -11,5 +11,3 @@ from pytest_fixtures.users_fixtures import (
 #     """
 #     print('I am getting ran in each test. Please switch me off')
 
-
-

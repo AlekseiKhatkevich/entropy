@@ -9,7 +9,7 @@ def user_initial_data() -> dict:
     """
     initial_data = dict(
         email='test@email.com',
-        password='1q2w3e',
+        password='rkgrt4Hp65',
         nickname='testuser',
         timezone='Iceland',
     )

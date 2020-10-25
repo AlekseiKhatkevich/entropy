@@ -48,7 +48,7 @@ class ErrorMessage:
         -> Exception(message=self, code=self)
         """
         # noinspection PyRedundantParentheses
-        yield from (self, self.error_code)
+        yield from (self, self.error_code,)
 
     def __new__(cls, section, error_code_number, *args, **kwargs):
         """
