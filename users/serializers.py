@@ -1,18 +1,18 @@
 from djoser import serializers as djoser_serializers
 
 
-class CustomUserSerializer(djoser_serializers.UserSerializer):
+class CustomUserCreateSerializer(djoser_serializers.UserCreateSerializer):
     """
-    Custom serializer for /users/ endpoint.
-    Adds possibility to create extra fields in user model during user registration.
+    Custom user creation serializer.user in /auth/users/:POST endpoint.
+    Added possibility to specify user nickname and timezone on creation
     """
+    class Meta(djoser_serializers.UserCreateSerializer.Meta):
+        fields = djoser_serializers.UserCreateSerializer.Meta.fields + (
+            'nickname',
+            'timezone',
+        )
 
-    class Meta(djoser_serializers.UserSerializer.Meta):
-         pass
 
-    def to_representation(self, instance):
 
-        # rep = super().to_representation(instance)
-        # rep['test'] = True
-        # return rep
-        pass
+
+

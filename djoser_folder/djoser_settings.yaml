@@ -4,7 +4,7 @@ default:
 
     DJOSER:
         SERIALIZERS:
-            user: users.serializers.CustomUserSerializer # user: djoser.serializers.UserSerializer
+            user_create: users.serializers.CustomUserCreateSerializer
 
 development:
 
