@@ -141,6 +141,12 @@ SIMPLE_JWT = {
 # default timeout for 1 DB operation
 DEFAULT_DATABASE_STATEMENT_TIMEOUT = 3000
 
+# DJOSER = {
+#     'SERIALIZERS': {
+#         'user': 'users.serializers.CustomUserSerializer',
+#     },
+# }
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -157,13 +163,10 @@ settings = dynaconf.DjangoDynaconf(
     merge_enabled=True,
     root_path=Path(r'.'),
     settings_files=[
-        'settings.yaml',
-        '.secrets.yaml',
-    ],
-    includes=[
-        str(Path('drf_folder/drf_settings.py')),
-        #str(Path('djoser_folder/djoser_settings.py')),
-        str(Path('djoser_folder/djoser_settings.yaml')),
+        Path('settings.yaml'),
+        Path('.secrets.yaml'),
+        Path('drf_folder/drf_settings.yaml'),
+        Path('djoser_folder/djoser_settings.yaml'),
     ],
     validators=[
         # Databases password and user must exists
