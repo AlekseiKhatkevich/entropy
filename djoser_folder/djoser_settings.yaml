@@ -1,0 +1,15 @@
+#  DJOSER settings
+
+default:
+
+development:
+    DJOSER:
+        PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND: True # default - False
+        USERNAME_RESET_SHOW_EMAIL_NOT_FOUND: True # default - False
+
+production:
+  DJOSER:
+      PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND: False # default - False
+      USERNAME_RESET_SHOW_EMAIL_NOT_FOUND: False # default - False
+
+test:

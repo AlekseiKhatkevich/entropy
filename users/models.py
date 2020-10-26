@@ -15,7 +15,6 @@ class User(AbstractBaseUser):
     Custom user model
     """
     USERNAME_FIELD = EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ('password', )
 
     last_login = None
 

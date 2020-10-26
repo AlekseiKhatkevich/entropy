@@ -32,4 +32,3 @@ if __name__ == '__main__':
             # ssl_certfile=Path(r'rootCA.pem'),
             #ssl_certfile=ssl_certfile,  Раскоментить только эту строку
         )
-    print(Path(__file__).parent.absolute(),)

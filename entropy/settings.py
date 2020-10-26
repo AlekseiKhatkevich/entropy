@@ -22,7 +22,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-
     #  Standard apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # new
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,18 +129,20 @@ AUTH_USER_MODEL = 'users.User'
 
 #  Password hashers for basic auth.
 PASSWORD_HASHERS = [
-    #'django.contrib.auth.hashers.Argon2PasswordHasher',
     'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 # Simple JWT settings
 
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
 }
+
+# default timeout for 1 DB operation
+DEFAULT_DATABASE_STATEMENT_TIMEOUT = 3000
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
@@ -161,7 +162,8 @@ settings = dynaconf.DjangoDynaconf(
     ],
     includes=[
         str(Path('drf_folder/drf_settings.py')),
-        str(Path('djoser_folder/djoser_settings.py')),
+        #str(Path('djoser_folder/djoser_settings.py')),
+        str(Path('djoser_folder/djoser_settings.yaml')),
     ],
     validators=[
         # Databases password and user must exists
@@ -178,4 +180,3 @@ settings = dynaconf.DjangoDynaconf(
     ]
 )  # noqa
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)
-
