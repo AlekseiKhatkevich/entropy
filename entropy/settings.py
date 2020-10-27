@@ -168,6 +168,7 @@ settings = dynaconf.DjangoDynaconf(
         Path('.secrets.yaml'),
         Path('drf_folder/drf_settings.yaml'),
         Path('djoser_folder/djoser_settings.yaml'),
+        Path('simple_jwt_folder/settings.py'),
     ],
     validators=[
         # Databases password and user must exists
