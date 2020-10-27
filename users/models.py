@@ -48,6 +48,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(
         verbose_name='Is user superuser',
         default=False,
+        editable=False,
     )
     nickname = models.CharField(
         verbose_name='User nickname',

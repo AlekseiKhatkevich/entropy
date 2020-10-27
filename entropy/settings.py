@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'drf_yasg2',
+    'corsheaders',
 
     # Project's apps
     'users.apps.UsersConfig',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # new
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -141,11 +143,10 @@ SIMPLE_JWT = {
 # default timeout for 1 DB operation
 DEFAULT_DATABASE_STATEMENT_TIMEOUT = 3000
 
-# DJOSER = {
-#     'SERIALIZERS': {
-#         'user': 'users.serializers.CustomUserSerializer',
-#     },
-# }
+#  CORS settings
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
