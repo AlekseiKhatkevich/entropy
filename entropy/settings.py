@@ -134,11 +134,7 @@ PASSWORD_HASHERS = [
     'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
 ]
 
-# Simple JWT settings
 
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
-}
 
 # default timeout for 1 DB operation
 DEFAULT_DATABASE_STATEMENT_TIMEOUT = 3000
