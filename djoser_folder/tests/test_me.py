@@ -30,11 +30,10 @@ class TestMePositive:
             'is_superuser',
         }
 
-        client.force_login(one_test_user)
-
         response = client.get(
             reverse('user-me'),
             data=None,
+            **one_test_user.jwt_auth_header,
         )
 
         assert response.status_code == status.HTTP_200_OK
@@ -50,13 +49,13 @@ class TestMePositive:
             timezone='UTC',
             nickname='test-me-action',
         )
-        client.force_login(one_test_user)
-
         response = client.put(
             reverse('user-me'),
             data=data,
             content_type='application/json',
+            ** one_test_user.jwt_auth_header,
         )
 
         assert response.status_code == status.HTTP_200_OK
         assert django_user_model.objects.filter(email=one_test_user.email, **data).exists()
+
