@@ -131,10 +131,8 @@ AUTH_USER_MODEL = 'users.User'
 
 #  Password hashers for basic auth.
 PASSWORD_HASHERS = [
-    'entropy.password_hashers.CustomArgon2PasswordHasher',  # new
+    'entropy.password_hashers.CustomArgon2PasswordHasher',
 ]
-
-
 
 # default timeout for 1 DB operation
 DEFAULT_DATABASE_STATEMENT_TIMEOUT = 3000

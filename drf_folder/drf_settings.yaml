@@ -16,9 +16,11 @@ default:
           - rest_framework.parsers.MultiPartParser
 
 development:
-#  REST_FRAMEWORK:
-#    DEFAULT_AUTHENTICATION_CLASSES:
-#      - rest_framework_simplejwt.authentication.JWTAuthentication
+  REST_FRAMEWORK:
+    DEFAULT_AUTHENTICATION_CLASSES:
+      - rest_framework_simplejwt.authentication.JWTAuthentication
+      - rest_framework_simplejwt.authentication.JWTTokenUserAuthentication
+    EXCEPTION_HANDLER: entropy.exception_handlers.custom_exception_handler
 
 production:
 
