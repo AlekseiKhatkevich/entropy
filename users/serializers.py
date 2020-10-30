@@ -32,3 +32,4 @@ class CustomUserSerializer(djoser_serializers.UserSerializer):
 
 
 
+

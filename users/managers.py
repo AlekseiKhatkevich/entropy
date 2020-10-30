@@ -43,7 +43,6 @@ class UserManager(BaseUserManager):
             err = exceptions.ValidationError(
                 *messages.user_3,
             )
-            err.swap_message = True
             raise err from orig_err
 
     def create(self, fc=True, **kwargs):
