@@ -76,7 +76,7 @@ class TestCustomExceptionHandlerPositive:
             'detail': message_instance.detail,
             'instance': self.context['request'].path,
         }
-        
+
         response = custom_exception_handler(
             drf_validation_error,
             self.context,
