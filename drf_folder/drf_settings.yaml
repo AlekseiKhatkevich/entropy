@@ -21,12 +21,10 @@ default:
       EXCEPTION_HANDLER: entropy.exception_handlers.custom_exception_handler
 
 development:
-  #REST_FRAMEWORK:
-    #DEFAULT_AUTHENTICATION_CLASSES:
-      # - entropy.authentication.CustomJWTAuthentication
-      #- rest_framework_simplejwt.authentication.JWTAuthentication
-      #- rest_framework_simplejwt.authentication.JWTTokenUserAuthentication
-
+  REST_FRAMEWORK:
+    DEFAULT_AUTHENTICATION_CLASSES:
+    - rest_framework.authentication.SessionAuthentication
+    - rest_framework.authentication.BasicAuthentication
 
 
 production:

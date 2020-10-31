@@ -2,6 +2,12 @@ import os
 import socket
 from pathlib import Path
 
+import dynaconf
+import sentry_sdk
+from sentry_sdk.integrations import django, redis
+
+DEBUG = False
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     # Project's apps
     'users.apps.UsersConfig',
     'misc.apps.MiscConfig',
+    'memorization.apps.MemorizationConfig',
 ]
 
 MIDDLEWARE = [
@@ -143,12 +150,21 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  Sentry sdk settings
 
+sentry_sdk.init(
+    dsn='https://2791085c0e0247d5b4f40f754a33c38e@o469526.ingest.sentry.io/5499145',
+    integrations=[django.DjangoIntegration(), redis.RedisIntegration(), ],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+    debug=DEBUG,
+    request_bodies='small',
+)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://dynaconf.readthedocs.io/en/latest/guides/django.html
-import dynaconf  # noqa
-
 settings = dynaconf.DjangoDynaconf(
     __name__,
     core_loaders=['YAML', 'PY'],
