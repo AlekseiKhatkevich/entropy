@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+
 from memorization import language_codes
 
 
@@ -28,7 +29,7 @@ class Family(models.Model):
         return self.name
 
     def __repr__(self):
-        return f'{self.id=} ~ {self.name=} ~ {self.first_language.name=} ~ {self.second_language.name}'
+        return f'{self.id=} ~ {self.name=} ~ {self.first_language.name=} ~ {self.second_language.name=}'
 
     class Meta:
         verbose_name = 'Language family'
@@ -85,8 +86,8 @@ class Word(models.Model):
     """
     word = models.CharField(
         max_length=30,
-        verbose_name='one word name',
-        unique=True,
+        verbose_name='one word',
+        db_index=True,
     )
     definition = models.CharField(
         max_length=300,
@@ -98,7 +99,10 @@ class Word(models.Model):
         on_delete=models.PROTECT,
     )
     translation = models.ManyToManyField(
-
+        'self',
+        verbose_name='same words in another languages',
+        related_name='translation',
+        symmetrical=True,
     )
 
     def __str__(self):
