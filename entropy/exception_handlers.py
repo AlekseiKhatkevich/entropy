@@ -9,7 +9,7 @@ from entropy.errors import messages
 
 
 @singledispatch
-def custom_exception_handler(exc, context, *args, **kwargs):
+def custom_exception_handler(exc, context):
     """
     Base function for handling exceptions in DRF.
     """
@@ -51,7 +51,14 @@ def _(exc, context, *args, **kwargs):
                     'instance': context['request'].path,
                 }
             else:
-                message = err['message']
+                message = str(err['message'])
+                message = {
+                    'type': code,
+                    'title': message,
+                    'status': exc.status_code,
+                    'detail': message,
+                    'instance': context['request'].path,
+                }
 
             data[field] = [message]
 

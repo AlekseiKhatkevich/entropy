@@ -1,9 +1,13 @@
-from entropy.errors.schema import ErrorMessage
 from django.contrib.auth.password_validation import password_validators_help_texts
+
+from entropy.errors.schema import ErrorMessage
+
 # POSSIBLE SECTIONS:
 
-# auth - related to authentication
+# auth - related to authentication(Djoser and Simple_jwt mainly)
 # user - related to user creation/modification  and user data in general
+# memo_family - related to Family model in 'Memorization' app.
+
 
 user_2 = ErrorMessage(
     section='user',
@@ -26,3 +30,4 @@ user_4 = ErrorMessage(
            'Perhaps you need to use manager method "create_user" instead of "objects.create(**kwargs)"'
            'or "get_user_model()(**kwargs)"',
 )
+

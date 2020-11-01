@@ -26,17 +26,22 @@ class Family(models.Model):
         related_name='second_language',
     )
 
+    class Meta:
+        verbose_name = 'Language family'
+        verbose_name_plural = 'Language families'
+        unique_together = ('first_language', 'second_language', 'name',)
+        index_together = ('first_language', 'second_language', )
+
     def __str__(self):
         return self.name
 
     def __repr__(self):
         return f'{self.id=} ~ {self.name=} ~ {self.first_language.name=} ~ {self.second_language.name=}'
 
-    class Meta:
-        verbose_name = 'Language family'
-        verbose_name_plural = 'Language families'
-        unique_together = ('first_language', 'second_language', 'name',)
-        index_together = ('first_language', 'second_language', )
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Language(models.Model):

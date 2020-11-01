@@ -68,3 +68,29 @@ class ErrorMessage:
             cls.code_to_instance[code] = instance
 
         return instance
+
+
+@dataclass
+class NativeError:
+    """
+    Represent native Django error
+    """
+    title: str
+    detail: str
+    error_code: str
+
+    code_to_instance: ClassVar[dict] = {}
+
+    def __new__(cls,  error_code, *args, **kwargs):
+        """
+        Singleton pattern implementation. If we already have class instance with a specific
+        error code, then we probably don't need to create another one and had better reuse one
+        already created.
+        """
+        try:
+            instance = cls.code_to_instance[error_code]
+        except KeyError:
+            instance = super().__new__(cls)
+            cls.code_to_instance[error_code] = instance
+
+        return instance

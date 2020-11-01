@@ -24,13 +24,21 @@ class TestCustomExceptionHandlerPositive:
         """
         Check that serializers ValidationError with standard
         error messages (not instances of ErrorMessage class) can be successfully placed
-        inside DRF Response without modification.
+        inside DRF Response with modification to 5 string.
         """
 
         drf_validation_error = serializers.ValidationError({
             'test_field': [
                 ErrorDetail('test_message', 'test_code', )
                 ]})
+
+        expected_error_view = {
+            'type': 'test_code',
+            'title': 'test_message',
+            'status': drf_validation_error.status_code,
+            'detail': 'test_message',
+            'instance': self.context['request'].path,
+        }
 
         response = custom_exception_handler(
             drf_validation_error,
@@ -39,7 +47,7 @@ class TestCustomExceptionHandlerPositive:
 
         assert response is not None
         assert isinstance(response, Response)
-        assert response.data['test_field'] == ['test_message']
+        assert response.data['test_field'] == [expected_error_view]
 
     def test_builtin_exc(self):
         """
