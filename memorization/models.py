@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 from memorization import language_codes
+from django.contrib.auth import get_user_model
 
 
 class Family(models.Model):
@@ -84,7 +85,7 @@ class Word(models.Model):
     """
     Represents one word and relationship between this word and other possible words.
     """
-    word = models.CharField(
+    name = models.CharField(
         max_length=30,
         verbose_name='one word',
         db_index=True,
@@ -92,6 +93,8 @@ class Word(models.Model):
     definition = models.CharField(
         max_length=300,
         verbose_name='one word definition',
+        null=True,
+        blank=True,
     )
     language = models.ForeignKey(
         Language,
@@ -106,12 +109,59 @@ class Word(models.Model):
     )
 
     def __str__(self):
-        return f'{self.word} in {self.language.name}'
+        return f'{self.name} in {self.language.name}'
 
     def __repr__(self):
-        return f'{self.id=} ~ {self.word=} ~ {self.language.name=}'
+        return f'{self.id=} ~ {self.name=} ~ {self.language.name=}'
 
     class Meta:
         verbose_name = 'Word'
         verbose_name_plural = 'Words'
-        unique_together = ('word', 'language',)
+        unique_together = ('name', 'language',)
+
+
+class NoteBook(models.Model):
+    """
+    Represents list of words to learn.
+    """
+    user = models.OneToOneField(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        verbose_name='notebook owner',
+    )
+    word = models.ForeignKey(
+        Word,
+        on_delete=models.CASCADE,
+        verbose_name='word to learn',
+    )
+    learn_in_language = models.ForeignKey(
+        Language,
+        on_delete=models.PROTECT,
+        verbose_name='language to learn in',
+    )
+    entry_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='date and time when entry was created',
+        editable=False,
+    )
+    memorization_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='date when word was memorized',
+    )
+    attempts = models.PositiveSmallIntegerField(
+        default=0,
+        verbose_name='quantity of memorization attempts',
+    )
+
+    def __str__(self):
+        return f'{self.word.name} in {self.learn_in_language.name}'
+
+    def __repr__(self):
+        return f'{self.id=} ~ {self.word.name=} ~ {self.learn_in_language.name=}'
+
+    class Meta:
+        verbose_name = 'Notebook'
+        verbose_name_plural = 'Notebooks'
+        unique_together = ('word', 'learn_in_language',)
+
