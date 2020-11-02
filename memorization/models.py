@@ -1,8 +1,9 @@
 from django.db import models
-from django.db.models import Q
-
+from django.db.models import Q, F
+from django.core import exceptions
 from memorization import language_codes
 from django.contrib.auth import get_user_model
+from entropy.errors import messages
 
 
 class Family(models.Model):
@@ -31,6 +32,12 @@ class Family(models.Model):
         verbose_name_plural = 'Language families'
         unique_together = ('first_language', 'second_language', 'name',)
         index_together = ('first_language', 'second_language', )
+        constraints = (
+            # first_language can't be equal to second_language
+            models.CheckConstraint(
+                name='point_on_itself_check',
+                check=~Q(first_language=F('second_language')),
+            ),)
 
     def __str__(self):
         return self.name
@@ -38,15 +45,26 @@ class Family(models.Model):
     def __repr__(self):
         return f'{self.id=} ~ {self.name=} ~ {self.first_language.name=} ~ {self.second_language.name=}'
 
+    def clean(self):
+        # First language can't be equal to itself
+        if self.first_language == self.second_language:
+            raise exceptions.ValidationError(
+                *messages.memo_family_1,
+            )
+
     def save(self, fc=True, *args, **kwargs):
         if fc:
             self.full_clean()
         super().save(*args, **kwargs)
 
+    # todo
+    def get_absolute_url(self):
+        pass
+
 
 class Language(models.Model):
     """
-    Represents language.
+    Represents language. This table is populated via custom migration and it is read-only.
     """
     code = models.CharField(
         verbose_name='country code acc. ISO 639',
@@ -68,12 +86,6 @@ class Language(models.Model):
         through_fields=('first_language', 'second_language'),
     )
 
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return f'{self.id=} ~ {self.code=}'
-
     class Meta:
         verbose_name = 'Language'
         verbose_name_plural = 'Languages'
@@ -84,6 +96,17 @@ class Language(models.Model):
                 check=Q(
                     code__in=language_codes.language_codes,
                 )), )
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f'{self.id=} ~ {self.code=}'
+
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Word(models.Model):
@@ -113,16 +136,21 @@ class Word(models.Model):
         symmetrical=True,
     )
 
+    class Meta:
+        verbose_name = 'Word'
+        verbose_name_plural = 'Words'
+        unique_together = ('name', 'language',)
+
     def __str__(self):
         return f'{self.name} in {self.language.name}'
 
     def __repr__(self):
         return f'{self.id=} ~ {self.name=} ~ {self.language.name=}'
 
-    class Meta:
-        verbose_name = 'Word'
-        verbose_name_plural = 'Words'
-        unique_together = ('name', 'language',)
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class NoteBook(models.Model):
@@ -159,14 +187,20 @@ class NoteBook(models.Model):
         verbose_name='quantity of memorization attempts',
     )
 
+    class Meta:
+        verbose_name = 'Notebook'
+        verbose_name_plural = 'Notebooks'
+        unique_together = ('word', 'learn_in_language',)
+
     def __str__(self):
         return f'{self.word.name} in {self.learn_in_language.name}'
 
     def __repr__(self):
         return f'{self.id=} ~ {self.word.name=} ~ {self.learn_in_language.name=}'
 
-    class Meta:
-        verbose_name = 'Notebook'
-        verbose_name_plural = 'Notebooks'
-        unique_together = ('word', 'learn_in_language',)
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
+
 

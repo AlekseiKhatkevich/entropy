@@ -95,6 +95,9 @@ class User(AbstractBaseUser):
             BrinIndex(fields=('registration_date',), autosummarize=True,),
         )
 
+    def __repr__(self):
+        return f'{self.id=} ~ {self.email=} ~ {self.nickname=}'
+
     def save(self, fc=True, *args, **kwargs):
         if fc:
             self.full_clean()

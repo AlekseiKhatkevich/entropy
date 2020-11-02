@@ -8,7 +8,14 @@ from entropy.errors.schema import ErrorMessage
 # user - related to user creation/modification  and user data in general
 # memo_family - related to Family model in 'Memorization' app.
 
-
+memo_family_1 = ErrorMessage(
+    section='memo_family',
+    error_code_number=1,
+    title='Language points on itself',
+    detail='Language can not point on itself. In language family left and right languages in'
+           'language pairs should be different languages',
+)
+#  --------------------------------------------------------------------------------------------------
 user_2 = ErrorMessage(
     section='user',
     error_code_number=2,
