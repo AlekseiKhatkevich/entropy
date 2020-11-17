@@ -19,12 +19,14 @@ class Family(models.Model):
         on_delete=models.CASCADE,
         verbose_name='first language',
         related_name='first_language',
+        to_field='code',
     )
     second_language = models.ForeignKey(
         'Language',
         on_delete=models.CASCADE,
         verbose_name='second language',
         related_name='second_language',
+        to_field='code',
     )
 
     class Meta:
@@ -64,12 +66,13 @@ class Family(models.Model):
 
 class Language(models.Model):
     """
-    Represents language. This table is populated via custom migration and it is read-only.
+    Represents language. This table populated via custom migration, and it is read-only.
     """
     code = models.CharField(
         verbose_name='country code acc. ISO 639',
         max_length=2,
         editable=False,
+        primary_key=True,
     )
     name = models.CharField(
         verbose_name='language name',
@@ -101,7 +104,7 @@ class Language(models.Model):
         return self.name
 
     def __repr__(self):
-        return f'{self.id=} ~ {self.code=}'
+        return f'{self.pk=} ~ {self.code=}'
 
     def save(self, fc=True, *args, **kwargs):
         if fc:
@@ -128,6 +131,7 @@ class Word(models.Model):
         Language,
         verbose_name='language of the word',
         on_delete=models.PROTECT,
+        to_field='code',
     )
     translation = models.ManyToManyField(
         'self',

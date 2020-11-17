@@ -4,7 +4,10 @@ from pytest_fixtures.users_fixtures import (
     jwt_auth_header,
 )
 from pytest_fixtures.misc_fixtures import (
-    api_client
+    api_client,
+)
+from pytest_fixtures.memoriztion_fixtures import (
+    one_word_with_translations,
 )
 
 
