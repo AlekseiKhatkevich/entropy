@@ -19,3 +19,6 @@ class TestWordPositive:
         )
         new_word = Word.objects.create(**positive_data)
         new_word.translation.set(one_word_with_translations)
+
+        assert Word.objects.filter(**positive_data).exists()
+        assert list(new_word.translation.all()) == one_word_with_translations
