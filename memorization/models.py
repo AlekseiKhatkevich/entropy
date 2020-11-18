@@ -4,6 +4,7 @@ from django.core import exceptions
 from memorization import language_codes
 from django.contrib.auth import get_user_model
 from entropy.errors import messages
+from memorization import managers
 
 
 class Family(models.Model):
@@ -112,10 +113,46 @@ class Language(models.Model):
         super().save(*args, **kwargs)
 
 
+class Connections(models.Model):
+    """
+    Model represents connections between words in different languages.
+    """
+    from_word = models.ForeignKey(
+        'Word',
+        on_delete=models.CASCADE,
+        verbose_name='first word',
+        related_name='first_word',
+    )
+    to_word = models.ForeignKey(
+        'Word',
+        on_delete=models.CASCADE,
+        verbose_name='second word',
+        related_name='second_word',
+    )
+
+    class Meta:
+        verbose_name = 'Word connection'
+        verbose_name_plural = 'Word connections'
+        unique_together = ('to_word', 'from_word', )
+        constraints = (
+            # first word can't be equal to second word.
+            models.CheckConstraint(
+                name='word_ne_self_check',
+                check=~Q(from_word=F('to_word')),
+            ),)
+
+    def save(self, fc=True, *args, **kwargs):
+        if fc:
+            self.full_clean()
+        super().save(*args, **kwargs)
+
+
 class Word(models.Model):
     """
     Represents one word and relationship between this word and other possible words.
     """
+    objects = managers.WordManager()
+
     name = models.CharField(
         max_length=30,
         verbose_name='one word',
@@ -136,8 +173,11 @@ class Word(models.Model):
     translation = models.ManyToManyField(
         'self',
         verbose_name='same words in another languages',
-        related_name='translation',
+        related_name='translations',
         symmetrical=True,
+        related_query_name='word',
+        through=Connections,
+        through_fields=('from_word', 'to_word',),
     )
 
     class Meta:
