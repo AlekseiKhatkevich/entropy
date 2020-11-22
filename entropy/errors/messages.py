@@ -22,6 +22,18 @@ memo_connections_1 = ErrorMessage(
     detail='Connected word instance can not point on itself. Word should be always connected'
            'with another word.',
 )
+memo_notebook_1 = ErrorMessage(
+    section='memo_notebook',
+    error_code_number=1,
+    title='learn_in_language field has the same language as word field.',
+    detail='You can not lear word in the same language as word is. Need to chose another language.',
+)
+memo_notebook_2 = ErrorMessage(
+    section='memo_notebook',
+    error_code_number=2,
+    title='entry data < memorization date',
+    detail='Entry date should be early than memorization date.',
+)
 #  --------------------------------------------------------------------------------------------------
 user_2 = ErrorMessage(
     section='user',

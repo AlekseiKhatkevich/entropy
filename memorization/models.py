@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.db import models
 from django.db.models import F, Q
+from django.utils import timezone
 
 from entropy.errors import messages
 from memorization import language_codes, managers
@@ -34,7 +35,7 @@ class Family(models.Model):
         verbose_name = 'Language family'
         verbose_name_plural = 'Language families'
         unique_together = ('first_language', 'second_language', 'name',)
-        index_together = ('first_language', 'second_language', )
+        index_together = ('first_language', 'second_language',)
         constraints = (
             # first_language can't be equal to second_language
             models.CheckConstraint(
@@ -99,7 +100,7 @@ class Language(models.Model):
                 name='language_code_check',
                 check=Q(
                     code__in=language_codes.language_codes,
-                )), )
+                )),)
 
     def __str__(self):
         return self.name
@@ -133,13 +134,19 @@ class Connections(models.Model):
     class Meta:
         verbose_name = 'Word connection'
         verbose_name_plural = 'Word connections'
-        unique_together = ('to_word', 'from_word', )
+        unique_together = ('to_word', 'from_word',)
         constraints = (
             # first word can't be equal to second word.
             models.CheckConstraint(
                 name='word_ne_self_check',
                 check=~Q(from_word=F('to_word')),
             ),)
+
+    def __str__(self):
+        return f'{self.from_word.name} / {self.to_word.name}'
+
+    def __repr__(self):
+        return f'{self.from_word=} / {self.to_word=}'
 
     def clean(self):
         if self.from_word == self.to_word:
@@ -223,7 +230,7 @@ class NoteBook(models.Model):
         verbose_name='language to learn in',
     )
     entry_date = models.DateTimeField(
-        auto_now_add=True,
+        default=timezone.now,
         verbose_name='date and time when entry was created',
         editable=False,
     )
@@ -241,6 +248,11 @@ class NoteBook(models.Model):
         verbose_name = 'Notebook'
         verbose_name_plural = 'Notebooks'
         unique_together = ('word', 'learn_in_language',)
+        constraints = (
+            models.CheckConstraint(
+                name='entry_date_vs_memorization_date_check',
+                check=Q(entry_date__lte=F('memorization_date')),
+            ),)
 
     def __str__(self):
         return f'{self.word.name} in {self.learn_in_language.name}'
@@ -248,9 +260,26 @@ class NoteBook(models.Model):
     def __repr__(self):
         return f'{self.id=} ~ {self.word.name=} ~ {self.learn_in_language.name=}'
 
+    def clean(self):
+        errors = {}
+        # Cant' lear word in same language. makes no sense.
+        if self.learn_in_language == self.word.language:
+            errors |= {
+                'learn_in_language': exceptions.ValidationError(
+                    *messages.memo_notebook_1,
+                )}
+        # Entry date should be earlier than memorization date.
+        if None not in (self.entry_date, self.memorization_date) \
+                and (self.entry_date >= self.memorization_date):
+            errors |= {
+                'memorization_date': exceptions.ValidationError(
+                    *messages.memo_notebook_2,
+                )}
+
+        if errors:
+            raise exceptions.ValidationError(errors)
+
     def save(self, fc=True, *args, **kwargs):
         if fc:
             self.full_clean()
         super().save(*args, **kwargs)
-
-

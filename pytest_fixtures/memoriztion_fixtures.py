@@ -35,7 +35,7 @@ def one_word(request) -> Callable:
     save_to_db - whether instance saved to db or not.
     """
 
-    def _closure(language: str, save_to_db: bool = False) -> Word:
+    def _closure(language: str, save_to_db: bool = True) -> Word:
         instance = Word(**LANGUAGES[language])
         if save_to_db:
             instance.save()
