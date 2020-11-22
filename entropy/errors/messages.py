@@ -15,6 +15,13 @@ memo_family_1 = ErrorMessage(
     detail='Language can not point on itself. In language family left and right languages in'
            'language pairs should be different languages',
 )
+memo_connections_1 = ErrorMessage(
+    section='memo_connections',
+    error_code_number=1,
+    title='Connected word instance points on itself',
+    detail='Connected word instance can not point on itself. Word should be always connected'
+           'with another word.',
+)
 #  --------------------------------------------------------------------------------------------------
 user_2 = ErrorMessage(
     section='user',

@@ -1,10 +1,10 @@
-from django.db import models
-from django.db.models import Q, F
-from django.core import exceptions
-from memorization import language_codes
 from django.contrib.auth import get_user_model
+from django.core import exceptions
+from django.db import models
+from django.db.models import F, Q
+
 from entropy.errors import messages
-from memorization import managers
+from memorization import language_codes, managers
 
 
 class Family(models.Model):
@@ -140,6 +140,12 @@ class Connections(models.Model):
                 name='word_ne_self_check',
                 check=~Q(from_word=F('to_word')),
             ),)
+
+    def clean(self):
+        if self.from_word == self.to_word:
+            raise exceptions.ValidationError(
+                *messages.memo_connections_1,
+            )
 
     def save(self, fc=True, *args, **kwargs):
         if fc:

@@ -8,6 +8,7 @@ from pytest_fixtures.misc_fixtures import (
 )
 from pytest_fixtures.memoriztion_fixtures import (
     one_word_with_translations,
+    one_word,
 )
 
 
