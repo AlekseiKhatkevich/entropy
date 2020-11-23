@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import F, Q, Func
 from django.utils import timezone
 
 from entropy.errors import messages
@@ -249,10 +249,20 @@ class NoteBook(models.Model):
         verbose_name_plural = 'Notebooks'
         unique_together = ('word', 'learn_in_language',)
         constraints = (
+            # Entry date should be older than memorization date.
             models.CheckConstraint(
                 name='entry_date_vs_memorization_date_check',
                 check=Q(entry_date__lte=F('memorization_date')),
-            ),)
+            ),
+            # Check learn_in_language field not equal to word language.
+            models.CheckConstraint(
+                name='same_language_check',
+                check=Func(
+                    F('word_id'),
+                    F('learn_in_language_id'),
+                    function='is_different_language',
+                    output_field=models.BooleanField(),
+                )))
 
     def __str__(self):
         return f'{self.word.name} in {self.learn_in_language.name}'

@@ -81,3 +81,19 @@ class TestNotebookModelNegative:
         with pytest.raises(expected_exception, match=expected_error_message):
             instance = NoteBook(**negative_data)
             instance.save(fc=False)
+
+    def test_same_language_check_constraint(self, one_test_user, one_word):
+        """
+        Check 'same_language_check' constraint.
+        """
+        negative_data = dict(
+            user=one_test_user,
+            word=one_word('russian'),
+            learn_in_language_id='ru',
+        )
+        expected_error_message = 'same_language_check'
+        expected_exception = IntegrityError
+
+        with pytest.raises(expected_exception, match=expected_error_message):
+            instance = NoteBook(**negative_data)
+            instance.save(fc=False)
