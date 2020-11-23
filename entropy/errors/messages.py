@@ -31,8 +31,20 @@ memo_notebook_1 = ErrorMessage(
 memo_notebook_2 = ErrorMessage(
     section='memo_notebook',
     error_code_number=2,
-    title='entry data < memorization date',
+    title='entry date < memorization date',
     detail='Entry date should be early than memorization date.',
+)
+memo_notebook_3 = ErrorMessage(
+    section='memo_notebook',
+    error_code_number=3,
+    title='entry date in the future',
+    detail='Entry date can not be in future. It should be in past or now',
+)
+memo_notebook_4 = ErrorMessage(
+    section='memo_notebook',
+    error_code_number=4,
+    title='memorization date in the future',
+    detail='Memorization date can not be in future. It should be in past or now',
 )
 #  --------------------------------------------------------------------------------------------------
 user_2 = ErrorMessage(
@@ -56,4 +68,5 @@ user_4 = ErrorMessage(
            'Perhaps you need to use manager method "create_user" instead of "objects.create(**kwargs)"'
            'or "get_user_model()(**kwargs)"',
 )
+#  ------------------------------------------------------------------------------------------------------
 

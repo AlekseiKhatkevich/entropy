@@ -1,5 +1,5 @@
 import zoneinfo
-
+from django.utils import timezone
 from django.core import exceptions
 from django.utils.deconstruct import deconstructible
 
@@ -7,10 +7,31 @@ from entropy.errors import messages
 
 
 @deconstructible
+class ProtectFutureValidator:
+    """
+    Validates if date is in the future or not. If so - raises an exception.
+    """
+
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
+
+    def __call__(self, value):
+        assert timezone.is_aware(value), 'Datetime should be aware.'
+
+        if value > timezone.now():
+            raise exceptions.ValidationError(
+                self.message,
+                self.code,
+            )
+
+
+@deconstructible
 class TimeZoneValidator:
     """
     Validates whether input string is valid timezone name or not.
     """
+
     def __call__(self, value):
         try:
             zoneinfo.ZoneInfo(value)
@@ -37,4 +58,3 @@ class Argon2HashValidator:
             raise exceptions.ValidationError(
                 *messages.user_4,
             )
-

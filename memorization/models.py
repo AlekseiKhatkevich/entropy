@@ -1,9 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.db import models
-from django.db.models import F, Q, Func
+from django.db.models import F, Func, Q
+from django.db.models.functions import Now
 from django.utils import timezone
 
+from entropy import validators as project_validators
 from entropy.errors import messages
 from memorization import language_codes, managers
 
@@ -233,12 +235,20 @@ class NoteBook(models.Model):
         default=timezone.now,
         verbose_name='date and time when entry was created',
         editable=False,
-    )
+        validators=[
+            project_validators.ProtectFutureValidator(
+                str(messages.memo_notebook_3),
+                messages.memo_notebook_3.error_code),
+        ])
     memorization_date = models.DateTimeField(
         null=True,
         blank=True,
         verbose_name='date when word was memorized',
-    )
+        validators=[
+            project_validators.ProtectFutureValidator(
+                str(messages.memo_notebook_4),
+                messages.memo_notebook_4.error_code),
+        ])
     attempts = models.PositiveSmallIntegerField(
         default=0,
         verbose_name='quantity of memorization attempts',
@@ -262,7 +272,13 @@ class NoteBook(models.Model):
                     F('learn_in_language_id'),
                     function='is_different_language',
                     output_field=models.BooleanField(),
-                )))
+                )),
+            #  Entry date and memorization date can't be in the future.
+            models.CheckConstraint(
+                name='protect_future_check',
+                check=Q(entry_date__lt=Now(), memorization_date__lt=Now(),)
+            )
+        )
 
     def __str__(self):
         return f'{self.word.name} in {self.learn_in_language.name}'
@@ -293,3 +309,11 @@ class NoteBook(models.Model):
         if fc:
             self.full_clean()
         super().save(*args, **kwargs)
+
+    @property
+    def is_memorized(self):
+        """
+        Is word memorized?
+        """
+        return self.memorization_date is not None
+

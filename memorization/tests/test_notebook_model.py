@@ -12,19 +12,38 @@ class TestNotebookModelPositive:
     """
     Positive tests on 'Notebook' model.
     """
-    def test_create_model_instance(self, one_test_user, one_word_with_translations):
+    def test_create_model_instance(self, one_test_user, one_word):
         """
         Check whether it's possible to create one model instance provided that
         correct set of input data has been supplied.
         """
         positive_data = dict(
             user=one_test_user,
-            word=one_word_with_translations[0],
+            word=one_word('english'),
             learn_in_language_id='pt',
         )
         NoteBook.objects.create(**positive_data)
 
         assert NoteBook.objects.filter(**positive_data).exists()
+
+    def test_is_memorized_property(self,  one_test_user, one_word):
+        # noinspection GrazieInspection
+        """
+        Check 'is_memorized' property returns True if word is memorized and False in opposite
+        scenario.
+        """
+        positive_data = dict(
+            user=one_test_user,
+            word=one_word('english'),
+            learn_in_language_id='pt',
+        )
+        entry = NoteBook.objects.create(**positive_data)
+
+        assert not entry.is_memorized
+
+        entry.memorization_date = timezone.now()
+
+        assert entry.is_memorized
 
 
 @pytest.mark.django_db
@@ -92,6 +111,30 @@ class TestNotebookModelNegative:
             learn_in_language_id='ru',
         )
         expected_error_message = 'same_language_check'
+        expected_exception = IntegrityError
+
+        with pytest.raises(expected_exception, match=expected_error_message):
+            instance = NoteBook(**negative_data)
+            instance.save(fc=False)
+
+    @pytest.mark.parametrize(
+        'entry_date, memorization_date',
+        [
+            (timezone.now(), timezone.now() + timezone.timedelta(days=1)),
+            (timezone.now() + timezone.timedelta(days=1), timezone.now() + timezone.timedelta(days=2))
+        ])
+    def test_protect_future_check_constraint(self, one_test_user, one_word, entry_date, memorization_date):
+        """
+        Check 'protect_future_check' constraint. Both datetime fields can't be in the future.
+        """
+        negative_data = dict(
+            user=one_test_user,
+            word=one_word('russian'),
+            learn_in_language_id='ru',
+            entry_date=entry_date,
+            memorization_date=memorization_date,
+        )
+        expected_error_message = 'protect_future_check'
         expected_exception = IntegrityError
 
         with pytest.raises(expected_exception, match=expected_error_message):
