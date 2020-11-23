@@ -12,6 +12,7 @@ class TestNotebookModelPositive:
     """
     Positive tests on 'Notebook' model.
     """
+
     def test_create_model_instance(self, one_test_user, one_word):
         """
         Check whether it's possible to create one model instance provided that
@@ -26,7 +27,7 @@ class TestNotebookModelPositive:
 
         assert NoteBook.objects.filter(**positive_data).exists()
 
-    def test_is_memorized_property(self,  one_test_user, one_word):
+    def test_is_memorized_property(self, one_test_user, one_word):
         # noinspection GrazieInspection
         """
         Check 'is_memorized' property returns True if word is memorized and False in opposite
@@ -51,6 +52,7 @@ class TestNotebookModelNegative:
     """
     Negative tests on 'Notebook' model.
     """
+
     def test_clean_learn_in_language(self, one_test_user, one_word):
         """
         Check if 'learn_in_language' field equal to language of 'word' field, then Validation error
@@ -120,8 +122,8 @@ class TestNotebookModelNegative:
     @pytest.mark.parametrize(
         'entry_date, memorization_date',
         [
-            (timezone.now(), timezone.now() + timezone.timedelta(days=1)),
-            (timezone.now() + timezone.timedelta(days=1), timezone.now() + timezone.timedelta(days=2))
+            (timezone.now(), (plus_one := timezone.now() + timezone.timedelta(days=1))),
+            (plus_one, plus_one + timezone.timedelta(days=1)),
         ])
     def test_protect_future_check_constraint(self, one_test_user, one_word, entry_date, memorization_date):
         """

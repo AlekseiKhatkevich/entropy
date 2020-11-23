@@ -46,6 +46,12 @@ memo_notebook_4 = ErrorMessage(
     title='memorization date in the future',
     detail='Memorization date can not be in future. It should be in past or now',
 )
+memo_word_1 = ErrorMessage(
+    section='memo_word',
+    error_code_number=1,
+    title='word points on itself',
+    detail='Word can not point on itself. Chose another word as a foreign key target.',
+)
 #  --------------------------------------------------------------------------------------------------
 user_2 = ErrorMessage(
     section='user',

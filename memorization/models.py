@@ -115,6 +115,13 @@ class Language(models.Model):
             self.full_clean()
         super().save(*args, **kwargs)
 
+    @property
+    def family_languages(self):
+        """
+        Returns all languages of this language family.
+        """
+        return self.family.all()
+
 
 class Connections(models.Model):
     """
@@ -311,7 +318,7 @@ class NoteBook(models.Model):
         super().save(*args, **kwargs)
 
     @property
-    def is_memorized(self):
+    def is_memorized(self) -> bool:
         """
         Is word memorized?
         """
